@@ -1,5 +1,3 @@
-> 수신받은 문자열 중 특정문자가 있는지 확인
->
-> 현재는 TCP만 구현되어 있음
+설명은 Wiki를 참조바랍니다.
 
-![이미지](parse_image.png)
+https://github.com/GoodayTH/RobotMentor/wiki/python_TCP_IP_Parse
