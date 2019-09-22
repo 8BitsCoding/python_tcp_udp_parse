@@ -74,10 +74,22 @@ class TcpLogic(tcp_udp_web_ui.ToolsUi):
                         msg = recv_msg.decode('utf-8')
                         # msg = '来自IP:{}端口:{}:\n{}\n'.format(address[0], address[1], msg)
                         if self.parse_checkbox.isChecked() == True:
-                            msg = 'Target IP:{}Port:{}:\n{}\n{}\n'.format(address[0], address[1], msg,
-                                                                          msg.count(self.lineEdit_parse.text()))
+                            if self.change_checkbox.isChecked() == True:
+                                count = msg.count(self.lineEdit_parse.text())
+                                msg_change = msg.replace(self.lineEdit_parse.text(), self.lineEdit_change.text(), count)
+                                msg = 'Target IP:{}Port:{}:\nReceived msg:{}\n문자열[{}]의 개수{}\nchanged msg:{}\n'.format(
+                                    address[0], address[1],
+                                    msg, self.lineEdit_parse.text(),
+                                    msg.count(self.lineEdit_parse.text()),
+                                    msg_change)
+                            else:
+                                msg = 'Target IP:{}Port:{}:\nReceived msg:{}\n문자열[{}]의 개수{}\n'.format(address[0],
+                                                                                                      address[1], msg,
+                                                                                                      self.lineEdit_parse.text(),
+                                                                                                      msg.count(
+                                                                                                          self.lineEdit_parse.text()))
                         else:
-                            msg = 'Target IP:{}Port:{}:\n{}\n'.format(address[0], address[1], msg)
+                            msg = 'Target IP:{}Port:{}:\nReceived msg:{}\n'.format(address[0], address[1], msg)
                         self.signal_write_msg.emit(msg)
                     else:
                         client.close()
@@ -121,8 +133,22 @@ class TcpLogic(tcp_udp_web_ui.ToolsUi):
             recv_msg = self.tcp_socket.recv(1024)
             if recv_msg:
                 msg = recv_msg.decode('utf-8')
-                # msg = '来自IP:{}端口:{}:\n{}\n'.format(address[0], address[1], msg)
-                msg = 'Target IP:{}Port:{}:\n{}\n'.format(address[0], address[1], msg)
+                if self.parse_checkbox.isChecked() == True:
+                    if self.change_checkbox.isChecked() == True:
+                        count = msg.count(self.lineEdit_parse.text())
+                        msg_change = msg.replace(self.lineEdit_parse.text(), self.lineEdit_change.text(), count)
+                        msg = 'Target IP:{}Port:{}:\nReceived msg:{}\n문자열[{}]의 개수{}\nchanged msg:{}\n'.format(
+                            address[0], address[1],
+                            msg, self.lineEdit_parse.text(),
+                            msg.count(self.lineEdit_parse.text()),
+                            msg_change)
+                    else:
+                        msg = 'Target IP:{}Port:{}:\nReceived msg:{}\n문자열[{}]의 개수{}\n'.format(address[0], address[1], msg,
+                                                                             self.lineEdit_parse.text(),
+                                                                             msg.count(self.lineEdit_parse.text()))
+                else:
+                    # msg = '来自IP:{}端口:{}:\n{}\n'.format(address[0], address[1], msg)
+                    msg = 'Target IP:{}Port:{}:\nReceived msg:{}\n'.format(address[0], address[1], msg)
                 self.signal_write_msg.emit(msg)
             else:
                 self.tcp_socket.close()

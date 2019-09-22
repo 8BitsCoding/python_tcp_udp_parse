@@ -50,6 +50,8 @@ class ToolsUi(QDialog):
         # CheckBox
         self.lineEdit_parse = QtWidgets.QLineEdit()
         self.parse_checkbox = QCheckBox()
+        self.lineEdit_change = QtWidgets.QLineEdit()
+        self.change_checkbox = QCheckBox()
 
         # 定义布局
         # 레이아웃 정의
@@ -127,6 +129,8 @@ class ToolsUi(QDialog):
         self.h_box_4.addWidget(self.pushButton_unlink)
         self.h_box_5.addWidget(self.lineEdit_parse)
         self.h_box_5.addWidget(self.parse_checkbox)
+        self.h_box_5.addWidget(self.lineEdit_change)
+        self.h_box_5.addWidget(self.change_checkbox)
         self.v_box_set.addLayout(self.h_box_1)
         self.v_box_set.addLayout(self.h_box_2)
         self.v_box_set.addLayout(self.h_box_3)
@@ -213,6 +217,7 @@ class ToolsUi(QDialog):
         self.label_written.setText(self._translate("TCP-UDP", "Written by Wangler2333"))
 
         self.parse_checkbox.setText(self._translate("TCP-UDP", "문자열파싱"))
+        self.change_checkbox.setText(self._translate("TCP-UDP", "문자열교체"))
 
     def connect(self):
         """

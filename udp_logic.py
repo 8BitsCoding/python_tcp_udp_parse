@@ -16,6 +16,7 @@ class UdpLogic(tcp_udp_web_ui.ToolsUi):
     def udp_server_start(self):
         """
         开启UDP服务端方法
+        UDP 서버 열기
         :return:
         """
         self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -24,12 +25,14 @@ class UdpLogic(tcp_udp_web_ui.ToolsUi):
             address = ('', port)
             self.udp_socket.bind(address)
         except Exception as ret:
-            msg = '请检查端口号\n'
+            # msg = '请检查端口号\n'
+            msg = 'Check Port num plz\n'
             self.signal_write_msg.emit(msg)
         else:
             self.sever_th = threading.Thread(target=self.udp_server_concurrency)
             self.sever_th.start()
-            msg = 'UDP服务端正在监听端口:{}\n'.format(port)
+            # msg = 'UDP服务端正在监听端口:{}\n'.format(port)
+            msg = 'UDP Server Read to Receive Port {}\n'.format(port)
             self.signal_write_msg.emit(msg)
 
     def udp_server_concurrency(self):
@@ -40,7 +43,12 @@ class UdpLogic(tcp_udp_web_ui.ToolsUi):
         while True:
             recv_msg, recv_addr = self.udp_socket.recvfrom(1024)
             msg = recv_msg.decode('utf-8')
-            msg = '来自IP:{}端口:{}:\n{}\n'.format(recv_addr[0], recv_addr[1], msg)
+            if self.parse_checkbox.isChecked() == True:
+                msg = 'Target IP:{}Port:{}:\n{}\n문자열[{}]의 개수{}\n'.format(address[0], address[1], msg,
+                                                                         self.lineEdit_parse.text(),
+                                                                         msg.count(self.lineEdit_parse.text()))
+            else:
+                msg = '来自IP:{}端口:{}:\n{}\n'.format(recv_addr[0], recv_addr[1], msg)
             self.signal_write_msg.emit(msg)
 
     def udp_client_start(self):
